@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Letter</title>
+  <style>
+    :root {
+      --bg-color: #fce7f3;
+      --card-bg: #fffdfa;
+      --card-border: #f3d5b5;
+      --text-main: #374151;
+      --accent: #e11d48;
+      --accent-soft: #ffe4e6;
+      --gold: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at 50% 30%, #fff1f2 0%, #fce7f3 50%, #fbcfe8 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* Container Surat */
+    .letter-container {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 36px 30px;
+      box-shadow: 0 15px 35px rgba(225, 29, 72, 0.12), 0 5px 15px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(244, 114, 182, 0.25);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .letter-container:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px rgba(225, 29, 72, 0.16), 0 6px 18px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Dekorasi Pita / Stamp */
+    .stamp-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      background: linear-gradient(135deg, #fb7185, #e11d48);
+      color: white;
+      font-size: 26px;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35);
+      margin-bottom: 20px;
+      animation: floatBadge 3s ease-in-out infinite;
+    }
+
+    @keyframes floatBadge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* Frame Garis Kertas Surat */
+    .letter-inner {
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 31px,
+        rgba(226, 232, 240, 0.6) 31px,
+        rgba(226, 232, 240, 0.6) 32px
+      );
+      padding: 24px 16px;
+      border-radius: 12px;
+      border: 1px dashed rgba(244, 114, 182, 0.4);
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Teks Judul dengan Efek Ketik */
+    .typewriter-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #be123c;
+      letter-spacing: -0.5px;
+      min-height: 2.8rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 8px 0;
+      text-shadow: 0 2px 4px rgba(190, 18, 60, 0.1);
+    }
+
+    /* Kursor Berkedip */
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 2.2rem;
+      background-color: #be123c;
+      margin-left: 4px;
+      border-radius: 2px;
+      animation: blink 0.8s infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    /* Pesan Tambahan yang Muncul Bertahap */
+    .sub-message {
+      margin-top: 14px;
+      font-size: 1.05rem;
+      color: #64748b;
+      line-height: 1.6;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .sub-message.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Tombol Aksi */
+    .action-row {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: linear-gradient(135deg, #f43f5e, #e11d48);
+      color: white;
+      box-shadow: 0 4px 14px rgba(225, 29, 72, 0.25);
+    }
+
+    .btn:hover {
+      transform: scale(1.04);
+      box-shadow: 0 6px 18px rgba(225, 29, 72, 0.35);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #475569;
+      box-shadow: none;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Canvas Confetti */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="letter-container">
+    <div class="stamp-badge">🎂</div>
+
+    <div class="letter-inner">
+      <div style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #fb7185; margin-bottom: 6px;">
+        Special Wish For You
+      </div>
+
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <span id="typewriter" class="typewriter-title"></span>
+        <span class="cursor" id="cursor"></span>
+      </div>
+
+      <p id="sub-message" class="sub-message">
+        Semoga panjang umur, sehat selalu, dan setiap harapanmu mekar menjadi kenyataan terindah! ✨🎉
+      </p>
+    </div>
+
+    <div class="action-row">
+      <button class="btn" id="btn-replay">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+        </svg>
+        Ketik Ulang
+      </button>
+      <button class="btn btn-secondary" id="btn-confetti">
+        🎉 Rayakan!
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const textToType = "Happy Birthday";
+    const typewriterElement = document.getElementById("typewriter");
+    const subMessageElement = document.getElementById("sub-message");
+    const replayBtn = document.getElementById("btn-replay");
+    const confettiBtn = document.getElementById("btn-confetti");
+
+    let typingTimeout = null;
+
+    function typeWriter(text, index = 0) {
+      if (index === 0) {
+        typewriterElement.textContent = "";
+        subMessageElement.classList.remove("visible");
+      }
+
+      if (index < text.length) {
+        typewriterElement.textContent += text.charAt(index);
+        typingTimeout = setTimeout(() => {
+          typeWriter(text, index + 1);
+        }, 130);
+      } else {
+        // Selesai mengetik: munculkan pesan dan confetti!
+        setTimeout(() => {
+          subMessageElement.classList.add("visible");
+          launchConfetti();
+        }, 300);
+      }
+    }
+
+    replayBtn.addEventListener("click", () => {
+      clearTimeout(typingTimeout);
+      typeWriter(textToType, 0);
+    });
+
+    confettiBtn.addEventListener("click", () => {
+      launchConfetti();
+    });
+
+    // Mulai animasi pertama kali
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+        typeWriter(textToType, 0);
+      }, 500);
+    });
+
+    // --- Efek Confetti Sederhana & Ringan (Tanpa Eksternal Library) ---
+    const canvas = document.getElementById("confetti-canvas");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    function launchConfetti() {
+      const colors = ["#f43f5e", "#ec4899", "#8b5cf6", "#3b82f6", "#10b981", "#f59e0b"];
+      for (let i = 0; i < 70; i++) {
+        particles.push({
+          x: canvas.width / 2 + (Math.random() - 0.5) * 200,
+          y: canvas.height / 2,
+          w: Math.random() * 8 + 4,
+          h: Math.random() * 6 + 4,
+          vx: (Math.random() - 0.5) * 12,
+          vy: Math.random() * -12 - 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          rotationSpeed: (Math.random() - 0.5) * 10,
+          opacity: 1
+        });
+      }
+      if (!isAnimating) {
+        animateConfetti();
+      }
+    }
+
+    let isAnimating = false;
+    function animateConfetti() {
+      isAnimating = true;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((p, index) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.35; // gravitasi
+        p.rotation += p.rotationSpeed;
+        p.opacity -= 0.012;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, p.opacity);
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+
+        if (p.opacity <= 0 || p.y > canvas.height) {
+          particles.splice(index, 1);
+        }
+      });
+
+      if (particles.length > 0) {
+        requestAnimationFrame(animateConfetti);
+      } else {
+        isAnimating = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+  </script>
+</body>
+</html>
